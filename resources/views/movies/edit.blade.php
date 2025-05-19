@@ -19,6 +19,9 @@
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="title" name="title"
                             value="{{ old('title', $movie->title) }}" required>
+                        @error('title')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -28,6 +31,9 @@
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="slug" name="slug"
                             value="{{ old('slug', $movie->slug) }}" required>
+                        @error('slug')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -36,6 +42,9 @@
                     <label for="synopsis" class="col-sm-3 col-form-label fw-semibold">Synopsis</label>
                     <div class="col-sm-9">
                         <textarea class="form-control" id="synopsis" name="synopsis" rows="4">{{ old('synopsis', $movie->synopsis) }}</textarea>
+                        @error('synopsis')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -52,6 +61,9 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('category_id')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -61,6 +73,9 @@
                     <div class="col-sm-9">
                         <input type="number" class="form-control" id="year" name="year"
                             value="{{ old('year', $movie->year) }}" required>
+                        @error('year')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -70,6 +85,9 @@
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="actors" name="actors"
                             value="{{ old('actors', $movie->actors) }}">
+                        @error('actors')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -79,6 +97,9 @@
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="cover_image" name="cover_image"
                             value="{{ old('cover_image', $movie->cover_image) }}">
+                        @error('cover_image')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 

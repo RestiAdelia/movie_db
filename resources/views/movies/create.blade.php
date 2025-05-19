@@ -10,19 +10,30 @@
             <div class="mb-3 row">
                 <label for="title" class="col-sm-2 col-form-label">Title</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
+                    @error('title')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="slug" class="col-sm-2 col-form-label">Slug</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug') }}" required>
+                    <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug') }}"
+                        required>
+                    @error('slug')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="synopsis" class="col-sm-2 col-form-label">Synopsis</label>
                 <div class="col-sm-10">
                     <textarea class="form-control" id="synopsis" name="synopsis" rows="3">{{ old('synopsis') }}</textarea>
+                    @error('synopsis')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="mb-3 row">
@@ -36,24 +47,38 @@
                             </option>
                         @endforeach
                     </select>
+                    @error('category_id')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="year" class="col-sm-2 col-form-label">Year</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="year" name="year" value="{{ old('year') }}" required>
+                    <input type="number" class="form-control" id="year" name="year" value="{{ old('year') }}"
+                        required>
+                    @error('year')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="actors" class="col-sm-2 col-form-label">Actors</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="actors" name="actors" value="{{ old('actors') }}">
+                    @error('actors')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="cover_image" class="col-sm-2 col-form-label">Cover Image URL</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="cover_image" name="cover_image" value="{{ old('cover_image') }}">
+                    <input type="text" class="form-control" id="cover_image" name="cover_image"
+                        value="{{ old('cover_image') }}">
+                    @error('cover_image')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="mb-3">
