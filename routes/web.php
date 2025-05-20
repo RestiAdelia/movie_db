@@ -10,6 +10,9 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('layouts.home');
 });
+// Route::get('/home', function () {
+//     return view('layouts.template');
+// });
 
 Route::resource('movie', MovieController::class);
 Route::resource('category', CategoryController::class);

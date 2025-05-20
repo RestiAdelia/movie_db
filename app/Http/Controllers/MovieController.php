@@ -10,8 +10,8 @@ class MovieController extends Controller
 {
     public function index()
     {
-        $movies = Movie::with('category')->paginate(10);
-        return view('movies.index', ['movies' => $movies]);
+        $movies = Movie:: latest()->paginate(10);
+        return view('layouts.home', compact('movies'));
     }
 
     public function create()
