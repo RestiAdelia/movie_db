@@ -8,16 +8,24 @@ use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
-    public function index()
+    public function homepage()
     {
-        $movies = Movie:: latest()->paginate(10);
-        return view('movies.index', compact('movies'));
+        $movies = Movie::latest()->paginate(10);
+        return view('layouts.home', compact('movies'));
+    }
+    public function detail($id, $slug)
+    {
+        $movie = Movie::find($id);
+        return view('movies.detailmovie', compact('movie'));
     }
 
-   public function homepage(){
-     $movies = Movie:: latest()->paginate(10);
-        return view('layouts.home', compact('movies'));
-   }
+
+
+    public function index()
+    {
+        $movies = Movie::latest()->paginate(10);
+        return view('movies.index', compact('movies'));
+    }
 
     public function create()
     {
