@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/home', function () {
-    return view('layouts.home');
-});
+// Route::get('/home', function () {
+//     return view('layouts.home');
+
 // Route::get('/home', function () {
 //     return view('layouts.template');
 // });
 
 Route::resource('movie', MovieController::class);
+
+Route::get('home', [MovieController::class, 'homepage']);
+
 Route::resource('category', CategoryController::class);

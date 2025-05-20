@@ -11,8 +11,13 @@ class MovieController extends Controller
     public function index()
     {
         $movies = Movie:: latest()->paginate(10);
-        return view('layouts.home', compact('movies'));
+        return view('movies.index', compact('movies'));
     }
+
+   public function homepage(){
+     $movies = Movie:: latest()->paginate(10);
+        return view('layouts.home', compact('movies'));
+   }
 
     public function create()
     {
