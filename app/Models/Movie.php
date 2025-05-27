@@ -12,7 +12,7 @@ class Movie extends Model
     /** @use HasFactory<\Database\Factories\MovieFactory> */
     use HasFactory;
     protected $fillable = [
-        'title', 'category_id', 'slug', 'cover_image', 'trailer',
+        'title', 'category_id', 'slug', 'cover_image',
         'year', 'actors', 'synopsis'
     ];
 
@@ -20,4 +20,4 @@ class Movie extends Model
     {
         return $this->belongsTo(Category::class);
     }
-} 
+}

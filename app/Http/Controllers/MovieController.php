@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MovieController extends Controller
 {
@@ -14,6 +15,7 @@ class MovieController extends Controller
         return view('layouts.home', compact('movies'));
     }
     public function detail($id, $slug)
+
     {
         $movie = Movie::find($id);
         return view('movies.detailmovie', compact('movie'));
@@ -35,20 +37,40 @@ class MovieController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+         $slug = Str::slug($request->title);
 
+        // Tambahkan slug ke dalam request
+        $request->merge(['slug' => $slug]);
+
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:movies,slug',
             'synopsis' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'year' => 'required|digits:4|integer',
-            'actors' => 'nullable|string',
-            'cover_image' => 'nullable|string',
+            'year' => 'required | integer| min:1950 | max: ' . date('Y'),
+            'actors' => 'required|string',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,webp,|max:2048',
         ]);
+        $slug = Str::slug($request->title);
+        // Simpan input ke storage
+        $cover = null;
+        
+        if ($request->hasFile('cover_image')) {
+            $cover  = $request->file('cover_image')->store('covers', 'public');
+        }
+        //simpan ke tabel movies database
+        Movie::create(
+            [
+                'title' => $validated['title'],
+                'slug' => $slug,
+                'synopsis' => $validated['synopsis'],
+                'category_id' => $validated['category_id'],
+                'year' => $validated['year'],
+                'actors' => $validated['actors'],
+                'cover_image' => $cover,
+            ]
+        );
 
-        Movie::create($validated);
-
-        return redirect()->route('movie.index')->with('success', 'Movie created successfully.');
+        return redirect('home')->with('success', 'Data berhasil disimpan!');
     }
 
     public function edit(Movie $movie)
@@ -70,9 +92,7 @@ class MovieController extends Controller
             'cover_image' => 'nullable|string',
         ]);
 
-        $movie->update($validated);
-
-        return redirect()->route('movie.index')->with('success', 'Movie updated successfully.');
+        return redirect()->route('home')->with('success', 'Movie updated successfully.');
     }
 
     public function destroy(Movie $movie)
