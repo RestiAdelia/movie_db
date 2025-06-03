@@ -39,7 +39,7 @@ class MovieController extends Controller
 
     public function store(Request $request)
     {
-         $slug = Str::slug($request->title);
+        $slug = Str::slug($request->title);
 
         // Tambahkan slug ke dalam request
         $request->merge(['slug' => $slug]);
@@ -81,42 +81,74 @@ class MovieController extends Controller
         return view('movies.edit', compact('movie', 'categories'));
     }
 
-   public function update(Request $request, Movie $movie)
-{
-    $validated = $request->validate([
-        'title' => 'required|string|max:255',
-        'slug' => 'required|string|max:255|unique:movies,slug,' . $movie->id,
-        'synopsis' => 'nullable|string',
-        'category_id' => 'required|exists:categories,id',
-        'year' => 'required|digits:4|integer',
-        'actors' => 'nullable|string',
-        'cover_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
+    // public function update(Request $request, Movie $movie)
+    // {
+    //     $validated = $request->validate([
+    //         'title' => 'required|string|max:255',
+    //         'slug' => 'required|string|max:255|unique:movies,slug,' . $movie->id,
+    //         'synopsis' => 'nullable|string',
+    //         'category_id' => 'required|exists:categories,id',
+    //         'year' => 'required|digits:4|integer',
+    //         'actors' => 'nullable|string',
+    //         'cover_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    //     ]);
 
-    // Update data movie
-    $movie->title = $validated['title'];
-    $movie->slug = $validated['slug'];
-    $movie->synopsis = $validated['synopsis'];
-    $movie->category_id = $validated['category_id'];
-    $movie->year = $validated['year'];
-    $movie->actors = $validated['actors'];
+    //     // Update data movie
+    //     $movie->title = $validated['title'];
+    //     $movie->slug = $validated['slug'];
+    //     $movie->synopsis = $validated['synopsis'];
+    //     $movie->category_id = $validated['category_id'];
+    //     $movie->year = $validated['year'];
+    //     $movie->actors = $validated['actors'];
 
-    // // Jika ada file cover_image baru yang diunggah
-    // if ($request->hasFile('cover_image')) {
-    //     // Hapus gambar lama jika ada
-    //     if ($movie->cover_image && \Storage::exists('public/' . $movie->cover_image)) {
-    //         \Storage::delete('public/' . $movie->cover_image);
-    //     }
+    //     // // Jika ada file cover_image baru yang diunggah
+    //     // if ($request->hasFile('cover_image')) {
+    //     //     // Hapus gambar lama jika ada
+    //     //     if ($movie->cover_image && \Storage::exists('public/' . $movie->cover_image)) {
+    //     //         \Storage::delete('public/' . $movie->cover_image);
+    //     //     }
 
-    //     // Simpan gambar baru
-    //     $coverPath = $request->file('cover_image')->store('covers', 'public');
-    //     $movie->cover_image = $coverPath;
-   // }
+    //     //     // Simpan gambar baru
+    //     //     $coverPath = $request->file('cover_image')->store('covers', 'public');
+    //     //     $movie->cover_image = $coverPath;
+    //     // }
 
-    // $movie->save();
+    //     // $movie->save();
 
-    return redirect()->route('movie.index')->with('success', 'Movie updated successfully.');
-}
+    //     return redirect()->route('movie.index')->with('success', 'Movie updated successfully.');
+    // }
+    public function update(Request $request, Movie $movie)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:movies,slug,' . $movie->id,
+            'synopsis' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'year' => 'required|digits:4|integer',
+            'actors' => 'nullable|string',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,webp,|max:2048',
+        ]);
+
+        $movie->title = $validated['title'];
+        $movie->slug = $validated['slug'];
+        $movie->synopsis = $validated['synopsis'];
+        $movie->category_id = $validated['category_id'];
+        $movie->year = $validated['year'];
+        $movie->actors = $validated['actors'];
+
+        if ($request->hasFile('cover_image')) {
+            if ($movie->cover_image && Storage::exists('public/' . $movie->cover_image)) {
+                Storage::delete('public/' . $movie->cover_image);
+            }
+
+            $coverPath = $request->file('cover_image')->store('covers', 'public');
+            $movie->cover_image = $coverPath;
+        }
+
+        $movie->save(); // <-- PENTING, inilah penyimpanan ke DB
+
+        return redirect()->route('movie.index')->with('success', 'Movie updated successfully.');
+    }
 
     public function destroy(Movie $movie)
     {
