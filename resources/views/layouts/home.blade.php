@@ -2,6 +2,7 @@
 @section('title', 'Data Home')
 @section('navHome', 'active')
 @section('content')
+
     <h1>Lates Movies</h1>
 
     <div class="row">

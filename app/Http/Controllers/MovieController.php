@@ -6,6 +6,8 @@ use App\Models\Movie;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
 
 class MovieController extends Controller
 {
@@ -53,7 +55,7 @@ class MovieController extends Controller
         $slug = Str::slug($request->title);
         // Simpan input ke storage
         $cover = null;
-        
+
         if ($request->hasFile('cover_image')) {
             $cover  = $request->file('cover_image')->store('covers', 'public');
         }
@@ -79,21 +81,42 @@ class MovieController extends Controller
         return view('movies.edit', compact('movie', 'categories'));
     }
 
-    public function update(Request $request, Movie $movie)
-    {
-        $validated = $request->validate([
+   public function update(Request $request, Movie $movie)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'slug' => 'required|string|max:255|unique:movies,slug,' . $movie->id,
+        'synopsis' => 'nullable|string',
+        'category_id' => 'required|exists:categories,id',
+        'year' => 'required|digits:4|integer',
+        'actors' => 'nullable|string',
+        'cover_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:movies,slug,' . $movie->id,
-            'synopsis' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'year' => 'required|digits:4|integer',
-            'actors' => 'nullable|string',
-            'cover_image' => 'nullable|string',
-        ]);
+    // Update data movie
+    $movie->title = $validated['title'];
+    $movie->slug = $validated['slug'];
+    $movie->synopsis = $validated['synopsis'];
+    $movie->category_id = $validated['category_id'];
+    $movie->year = $validated['year'];
+    $movie->actors = $validated['actors'];
 
-        return redirect()->route('home')->with('success', 'Movie updated successfully.');
-    }
+    // // Jika ada file cover_image baru yang diunggah
+    // if ($request->hasFile('cover_image')) {
+    //     // Hapus gambar lama jika ada
+    //     if ($movie->cover_image && \Storage::exists('public/' . $movie->cover_image)) {
+    //         \Storage::delete('public/' . $movie->cover_image);
+    //     }
+
+    //     // Simpan gambar baru
+    //     $coverPath = $request->file('cover_image')->store('covers', 'public');
+    //     $movie->cover_image = $coverPath;
+   // }
+
+    // $movie->save();
+
+    return redirect()->route('movie.index')->with('success', 'Movie updated successfully.');
+}
 
     public function destroy(Movie $movie)
     {

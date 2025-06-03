@@ -1,32 +1,50 @@
-<header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-success fixed-top bg-success">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Fixed navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Movie App</a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                @auth
                     <li class="nav-item">
-                        <a class="nav-link @yield('navHome')" aria-current="page" href="{{route('home')}}">Home</a>
+                        <a class="nav-link @yield('navHome')" href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('navMovie')" aria-current="page" href="/movie">Movie</a>
+                        <a class="nav-link @yield('navMovie')" href="/movie">Movie</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('navMosen')" aria-current="page" href="/category">Category</a>
+                        <a class="nav-link @yield('navMosen')" href="/category">Category</a>
                     </li>
                     <li class="nav-item">
-<a class="nav-link @yield('navProdi')" aria-current="page" href="{{ route('movie.create') }}">Input  Movie</a>
+                        <a class="nav-link @yield('navProdi')" href="{{ route('movie.create') }}">Input Movie</a>
                     </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
+                @endauth
+            </ul>
+
+            <form class="d-flex me-3" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-light" type="submit">Search</button>
+            </form>
+
+            @auth
+                <!-- Dropdown user login -->
+                <div class="dropdown">
+                    <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownUser"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ Auth::user()->name }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                        <li class="px-3 py-1 text-muted small">{{ Auth::user()->email }}</li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="/logout" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-outline-light">Login</a>
+            @endauth
         </div>
-    </nav>
-</header>
+    </div>
+</nav>

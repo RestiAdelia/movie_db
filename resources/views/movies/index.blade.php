@@ -7,7 +7,7 @@
     <div class="container">
         <h1 class="mb-4">Daftar Movie</h1>
 
-       
+
         <a href="{{ route('movie.create') }}" class="btn btn-primary mb-3">
             <i class="bi bi-plus-lg"></i> Tambah Movie
         </a>
@@ -32,7 +32,7 @@
 
                             <td class="text-center">{{ $movie->id }}</td>
                             <td class="text-center">
-                                <img src="{{ $movie->cover_image }}" alt="Cover" class="img-thumbnail"
+                                <img src="{{ asset('storage/' . $movie->cover_image) }}" alt="Cover" class="img-thumbnail"
                                     style="width: 100px; height: 120px; object-fit: cover;">
                             </td>
                             <td>{{ $movie->title }}</td>
