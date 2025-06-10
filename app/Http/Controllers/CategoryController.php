@@ -32,9 +32,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id' => 'required|integer|unique:categories,id',
             'category_name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:255',
         ]);
 
         Category::create($validated);
@@ -96,7 +95,7 @@ class CategoryController extends Controller
             return redirect()->route('category.index')->with('error', 'Kategori ini tidak dapat dihapus karena masih digunakan oleh ' . $moviesCount . ' Movie.');
         }
 
-        
+
         $category->delete();
 
         return redirect()->route('category.index')->with('success', 'Kategori berhasil dihapus.');

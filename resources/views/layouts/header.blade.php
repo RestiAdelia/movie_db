@@ -25,7 +25,7 @@
             </form>
 
             @auth
-              
+
                 <div class="dropdown">
                     <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownUser"
                         data-bs-toggle="dropdown" aria-expanded="false">

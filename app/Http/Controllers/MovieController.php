@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -153,6 +154,12 @@ class MovieController extends Controller
     public function destroy(Movie $movie)
     {
         $movie->delete();
+        if (Gate::allows('delete')) {
+            echo "Delete Movie $movie";
+        } else {
+            abort(403);
+        }
+
 
         return redirect()->route('movie.index')->with('success', 'Movie deleted successfully.');
     }

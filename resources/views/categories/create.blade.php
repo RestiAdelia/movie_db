@@ -8,15 +8,6 @@
         <form action="{{ route('category.store') }}" method="POST">
             @csrf
             <div class="mb-3 row">
-                <label for="id" class="col-sm-2 col-form-label">ID</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" id="id" name="id" required>
-                    @error('id')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="mb-3 row">
                 <label for="category_name" class="col-sm-2 col-form-label">Category Name</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="category_name" name="category_name" required>
